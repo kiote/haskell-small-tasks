@@ -40,9 +40,28 @@ maximum' (x:xs)
 quicksort :: (Ord a) => [a] -> [a]
 quicksort [] = []
 quicksort (x:xs) = smallerSorted ++ [x] ++ biggerSorted
-  where smallerSorted = quicksort [a | a <- xs, a <= x]
-        biggerSorted = quicksort [a | a <- xs, a > x ]
+  where smallerSorted = quicksort(filter'(<=x) xs)
+        biggerSorted = quicksort(filter'(>x) xs)
 zipWith' :: (a -> b -> c) -> [a] -> [b] -> [c]
 zipWith' _ [] _ = []
 zipWith' _ _ [] = []
 zipWith' f (x:xs) (y:ys) = f x y : zipWith' f xs ys
+calcBmis :: [(Double, Double)] -> [Double]
+calcBmis xs = [bmi | (w, h) <- xs, let bmi = w/h^2]
+describeList :: [a] -> String
+describeList ls = "The list is " ++ case ls of [] -> "empty"
+                                               [x] -> "a sigletone list"
+                                               xs -> "a longer list"
+replicate' :: Int -> a -> [a]
+replicate' n x
+    | n <=0 = []
+    | otherwise = x : replicate' (n-1) x
+take' n _
+    | n <= 0 = []
+take' _ []  = []
+take' n (x:xs) = x : take' (n-1) xs
+filter' :: (a->Bool) -> [a] -> [a]
+filter' _ [] = []
+filter' p (x:xs)
+    | p x = x : filter' p xs
+    | otherwise = filter' p xs
